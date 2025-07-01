@@ -1,31 +1,40 @@
-<script>
-export default {}
+<script setup>
+import { useLangStore } from '@/stores/lang'
+import { useDarkMode } from '@/composables/useDarkMode'
+import { useWindowWidth } from '@/composables/useWindowWidth'
+
+const lang = useLangStore()
+const { dark, toggle } = useDarkMode()
+const width = useWindowWidth()
 </script>
 
 <template>
-  <div class="container">
-    <nav>
-      <router-link to="/">🏠 Home</router-link>
-      <router-link to="/cart">🧺 Cart</router-link>
-    </nav>
-    <hr />
-    <router-view />
-  </div>
+  <nav>
+    <router-link to="/">🏠 {{ lang.t('Home') }}</router-link>
+    <router-link to="/cart">🛒 {{ lang.t('cart') }}</router-link>
+    <button @click="toggle">{{ dark ? '☀️' : '🌙' }}</button>
+    <button @click="lang.toggleLang">{{ lang.currentLang.toUpperCase() }}</button>
+  </nav>
+
+  <p v-if="width < 600"> Phone size </p>
+
+  <router-view />
 </template>
 
-<style scoped>
+<style>
 nav {
   display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 20px;
+  gap: 1rem;
+  margin-bottom: 20px;  
 }
-a {
+
+nav a {
   text-decoration: none;
-  font-weight: bold;
-  color: black;
+  color: inherit;
 }
-a.router-link-active {
-  color: teal;
+
+body.dark-theme {
+  background-color: #121212;
+  color: white;
 }
 </style>

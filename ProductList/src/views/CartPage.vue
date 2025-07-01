@@ -1,11 +1,20 @@
 <script setup>
-import { useCartStore } from '@/stores/Cart'
+import { useCartStore } from '@/stores/cart'
+import { useTimer } from '@/composables/useTimer'
+
 
 const cart = useCartStore()
 cart.loadCart()
 
+const { time, start, stop, reset} = useTimer()
+
+
 const removeItem = (index) => {
   cart.removeFromCart(index)
+}
+const checkout = () => {
+  alert('Order Accepted. Thank you!')
+  cart.clearCart()
 }
 </script>
 
@@ -19,6 +28,11 @@ const removeItem = (index) => {
       </li>
     </ul>
     <p v-else>Cart is empty</p>
+
+    <div v-if="cart.items.length > 0" class="summary">
+      <p>Summary: <strong>{{ cart.totalPrice }} т</strong></p>
+      <button @click="checkout">Go to checkout</button>
+    </div>
   </div>
 </template>
 
@@ -36,6 +50,17 @@ button {
   background: none;
   border: none;
   color: red;
+  cursor: pointer;
+}
+.summary {
+  margin-top: 20px;
+}
+.summary button {
+  padding: 10px 20px;
+  background-color: teal;
+  color: white;
+  border-radius: 8px;
+  border: none;
   cursor: pointer;
 }
 </style>

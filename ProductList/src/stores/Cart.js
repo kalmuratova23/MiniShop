@@ -4,6 +4,11 @@ export const useCartStore = defineStore('cart', {
   state: () => ({
     items: []
   }),
+  getters: {
+    totalPrice: (state) => {
+      return state.items.reduce((sum, item) => sum + item.price, 0)
+    }
+  },
   actions: {
     addToCart(product) {
       this.items.push(product)
